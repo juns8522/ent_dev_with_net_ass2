@@ -1,0 +1,18 @@
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- index page for consultants -->
+<hgroup class="title">
+    <h2>@ViewBag.Message</h2>
+</hgroup>
+
+<h2>Index</h2>
+<!-- link to view all reports(both current, approved and rejected) -->
+<li>@Html.ActionLink("View all reports", "ViewReports", new {name = "All"})</li>
+<!-- links to page view only the approved reports -->
+<li>@Html.ActionLink("View all approved reports", "ViewReports", new { name = "Approved" })</li>
+<!-- links to page to display only non approved reports -->
+<li>@Html.ActionLink("View all not yet approved reports", "ViewReports", new { name = "Pending" })</li>
+<!-- link to the Add Report page -->
+<li>@Html.ActionLink("Add Report", "CreateReport", "Consultant")</li>
