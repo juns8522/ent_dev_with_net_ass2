@@ -1,0 +1,125 @@
+@model IEnumerable<BueConsulting.Models.Report>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    double departmentBudget = Convert.ToDouble(ConfigurationManager.AppSettings["DepartmentBudget"].ToString());
+    double companyBudget = Convert.ToDouble(ConfigurationManager.AppSettings["CompanyBudget"].ToString());
+}
+
+<hgroup class="title">
+    <h2>@ViewBag.Message</h2>
+</hgroup>
+
+<!--Table for displaying departments' expenses and whole company-->
+<div>
+    <h2>Company Expenses</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <td></td>
+                <td>Total Expenses</td>
+                <td>Left Budget</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>State Services</td>
+                <td align="right">$@ViewBag.StateExpenses</td>
+                <td align="right">$@(departmentBudget - ViewBag.StateExpenses)</td>
+            </tr>
+            <tr>
+                <td>Logistics Services</td>
+                <td align="right">$@ViewBag.LogisticsExpenses</td>
+                <td align="right">$@(departmentBudget - ViewBag.LogisticsExpenses)</td>
+            </tr>
+            <tr>
+                <td>Higher Education Services</td>
+                <td align="right">$@ViewBag.HigherEduExpenses</td>
+                <td align="right">$@(departmentBudget - ViewBag.HigherEduExpenses)</td>
+            </tr>
+            <tr>
+                <td>Blue Consulting</td>
+                <td align="right">$@ViewBag.TotalExpenses</td>
+                <td align="right">$@(companyBudget - ViewBag.TotalExpenses)</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!--Link to display total expenses approved by individual supervisors-->
+<div>
+    @Html.ActionLink("View Details", "ApprovedSupervisorDetail", "AccountsStaff")
+</div>
+
+<!--Table for displaying reports approved by supervisor-->
+<div>
+    <h2>Reports</h2>
+
+    <table>
+        <tr>
+            <th>Report Name</th>
+            <th>Department</th>
+            <th>Total Expenses</th>
+            <th>Expenses</th>
+            <th>Approve</th>
+            <th>Reject</th>
+        </tr>
+
+        @{
+            foreach (var report in Model)
+            {
+                <!--if approving a report leads to over budget, then display the row with red colour-->
+                if ((report.DepartmentName.Equals("State Services") && (ViewBag.StateExpenses + report.TotalAmount) > departmentBudget)
+               || (report.DepartmentName.Equals("Logistics Services") && (ViewBag.LogisticsExpenses + report.TotalAmount) > departmentBudget)
+               || (report.DepartmentName.Equals("Higher Education Services") && (ViewBag.HigherEduExpenses + report.TotalAmount) > departmentBudget))
+                {
+                    <tr style="background-color:#FF0000">
+                        <td>
+                            @Html.Encode(report.ReportName)
+                        </td>
+                        <td>
+                            @report.DepartmentName
+                        </td>
+                        <td align="right">
+                            $@report.TotalAmount
+                        </td>
+                        <td>
+                            @Html.ActionLink("View Expenses", "ViewExpenses", new { id = report.ReportId })
+                        </td>
+                        <td>
+                            @Html.ActionLink("Approve", "ApproveReport", new { id = report.ReportId })
+                        </td>
+                        <td>
+                            @Html.ActionLink("Reject", "RejectReport", new { id = report.ReportId })
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+                        <td>
+                            @Html.Encode(report.ReportName)
+                        </td>
+                        <td>
+                            @report.DepartmentName
+                        </td>
+                        <td align="right">
+                            $@report.TotalAmount
+                        </td>
+                        <td>
+                            @Html.ActionLink("View Expenses", "ViewExpenses", new { id = report.ReportId })
+                        </td>
+                        <td>
+                            @Html.ActionLink("Approve", "ApproveReport", new { id = report.ReportId })
+                        </td>
+                        <td>
+                            @Html.ActionLink("Reject", "RejectReport", new { id = report.ReportId })
+                        </td>
+                    </tr>
+                }
+            }
+        }
+
+    </table>
+</div>
