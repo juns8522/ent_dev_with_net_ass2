@@ -1,0 +1,88 @@
+@model BueConsulting.Models.CreateExpense
+@{
+    ViewBag.Title = "AddExpenses";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>AddExpenses</h2>
+
+Report Name: @Session["ReportName"]<br/>
+Number of Expenses: @Session["listSize"]
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { encType = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+
+    <fieldset>
+        <legend>Registration Form</legend>
+       
+        <ol>
+            <li>
+                @Html.LabelFor(m => m.Date)
+                @Html.TextBoxFor(m => m.Date)
+                
+            </li>
+            <li>
+                @Html.LabelFor(m => m.Description)
+                @Html.TextAreaFor(m => m.Description)
+            </li>
+            <li>
+                @Html.LabelFor(m => m.Location)
+                @Html.TextBoxFor(m => m.Location)
+            </li>
+            <li>
+                @Html.LabelFor(m => m.Amount)
+                @Html.TextBoxFor(m => m.Amount)
+            </li>
+            <li>
+                @Html.DropDownListFor(m => m.Currency, new[] { new SelectListItem { Text = "AUD", Value = "AUD"},
+                                                        new SelectListItem { Text = "EURO", Value = "EURO"},
+                                                        new SelectListItem { Text = "CNY", Value = "CNY"}})
+
+            </li>
+        </ol>
+        <input type="file" id="pdfUpload" name="pdfUpload" value="Add Pdf Receipt" />
+        <input type="submit" name="addExpenseBTN" value="Add Expense" />
+        <!--<input type="submit" name="addReportBTN" value="Finish Report" />-->
+    </fieldset>
+}
+<br/>
+@Html.ActionLink("Add Report", "AddReport", null, new { @class = "button"})
+<p class="error">@ViewBag.ErrorMessage</p>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+<script type="text/javascript">
+    $(function () {
+        $('#Date').datepicker({
+            dateFormat: "mm/dd/yy",
+            changeMonth: false,
+            changeYear: false,
+            stepMonths: false
+        });
+    });
+</script>
+    <script>
+        jQuery(function ($) {
+            $.validator.addMethod('date',
+            function (value, element) {
+                if (this.optional(element)) {
+                    return true;
+                }
+
+                var ok = true;
+                try {
+                    $.datepicker.parseDate('mm/dd/yy', value);
+                }
+                catch (err) {
+                    ok = false;
+                }
+                return ok;
+            });
+        });
+    </script>
+@Styles.Render("~/Content/themes/base/css", "~/Content/css")
+}
