@@ -1,0 +1,58 @@
+@{
+    ViewBag.Title = "ViewReports";
+    double departmentBudget = Convert.ToDouble(ConfigurationManager.AppSettings["DepartmentBudget"].ToString());
+}
+
+<div class="pagination">
+    <ul>
+        <li>@Html.ActionLink("Supervisors", "Index")</li>
+        <li>&raquo; &nbsp;View pending reports</li>
+    </ul>
+    <div class="clear"></div>
+</div>
+
+<hgroup class="title">
+    <h2>View Pending Reports</h2>
+</hgroup>
+
+<table class="padded">
+    <tr>
+        <th>
+            Report Name
+        </th>
+        <th>
+            Total cost
+        </th>
+        <th>
+            Expenses
+        </th>
+        <th>
+            Approval
+        </th>
+    </tr>
+    <!-- cycle through the reports and display its name, amount and a link to its expense -->
+    @foreach (var report in Model)
+    {
+        <tr >
+            <td>
+                @Html.Encode(report.ReportName)
+            </td>
+            <td>
+                @Html.Encode(report.TotalAmount)
+            </td>
+            <td>
+                @Html.ActionLink("View Expenses", "ViewExpenses", new { id = report.ReportId })
+            </td>
+            <td>
+                <!-- displays the option to approve or deny an expense -->
+                @if ((departmentBudget - ViewBag.MonthlyExpenses) < 0 || (departmentBudget - ViewBag.MonthlyExpenses) < report.TotalAmount)
+                {
+                    @Html.ActionLink("Approve", "UpdateApproval", new { id = report.ReportId, status = "approve" }, new { onclick = "return confirm('Approving the selected report will put you over your monthly budget. Are you sure you want to continue?');" })
+                } else {
+                    @Html.ActionLink("Approve", "UpdateApproval", new { id = report.ReportId, status = "approve" })   
+                }   
+                @Html.ActionLink("Deny", "UpdateApproval", new { id = report.ReportId, status = "deny" }, new { onclick = "return confirm('Are you sure you want to deny this expense report');" })
+            </td>
+        </tr>
+    }
+</table>
