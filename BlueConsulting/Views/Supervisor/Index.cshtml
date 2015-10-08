@@ -1,0 +1,45 @@
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    //get the department budget for the month
+    double departmentBudget = Convert.ToDouble(ConfigurationManager.AppSettings["DepartmentBudget"].ToString());
+}
+
+<div class="pagination">
+    <ul>
+        <li>@Html.ActionLink("Supervisors", "Index")</li>
+        <li>&raquo; &nbsp;Home</li>
+    </ul>
+    <div class="clear"></div>
+</div>
+
+<!-- title of the page -->
+<hgroup class="title">
+    <h2>@ViewBag.Message</h2>
+</hgroup>
+
+<h3>Department information</h3>
+<table class="padded">
+    <tr>
+        <td>Department:</td>
+            <!-- Viewbag for department information -->
+        <td>@ViewBag.Department</td>
+    </tr>
+    <tr>
+        <td>Total monthly approved expenses:</td>
+           <!-- viewbagfor list of current monthly expenses -->
+        <td>@ViewBag.MonthlyExpenses</td>
+    </tr>
+    <tr>
+        <td>Monthly budget remaining:</td>
+       <!-- get the remaining budget (total budget - expenses) -->
+        <td>@(departmentBudget - ViewBag.MonthlyExpenses)</td>
+    </tr>
+</table>
+
+<h2>Operations</h2>
+<ul>
+    <!-- links to reports -->
+    <li>@Html.ActionLink("View pending reports", "ViewReports")</li>
+    <li>@Html.ActionLink("View expenses rejected by accounts staff", "AccountsRejected")</li>
+</ul>
