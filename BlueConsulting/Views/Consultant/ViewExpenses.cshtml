@@ -1,0 +1,80 @@
+@using BueConsulting
+@model IEnumerable<BueConsulting.Models.Expense>
+@{
+    ViewBag.Title = "ViewExpenses";
+}
+<!-- provides a list of expenses-->
+<h2>ViewExpenses</h2>
+<table>
+
+    <tr>
+
+        <th>
+
+            Date
+
+        </th>
+
+        <th style="padding-left:20px;">
+
+            Description
+
+        </th>
+        <th style="padding-left:20px;">
+
+            Location
+
+        </th>
+        <th style="padding-left:20px;">
+
+            Amount
+
+        </th>
+        <th style="padding-left:20px;">
+
+            Currency
+
+        </th>
+        <th style="padding-left:20px;">
+
+            Amount AUD
+
+        </th>
+        <th style="padding-left:20px; ">
+
+            Receipt
+
+        </th>
+
+    </tr>
+    <!-- for each expense, display the date, description, location, amount, currency,amount in aud and a link to the receipt -->
+    @foreach (var expense in Model)
+    {
+        <tr>
+
+            <td>
+                @Html.Encode(expense.Date)
+            </td>
+            <td>
+                @Html.Encode(expense.Description)
+            </td>
+            <td>
+                @Html.Encode(expense.Location)
+            </td>
+            <td>
+                @Html.Encode(expense.Amount)
+            </td>
+            <td>
+                @Html.Encode(expense.Currency)
+            </td>
+            <td>
+                @Html.Encode(expense.AmountAud)
+            </td>
+            <td>
+                <!-- this is a link so to open/download the receipt -->
+                @Html.ActionLink("View Receipt", "ViewReceipt", new { id = expense.ExpenseId })
+            </td>
+        </tr>
+
+    }
+</table>
