@@ -1,0 +1,45 @@
+@{
+    ViewBag.Title = "Expenses rejected by accounts staff";
+}
+
+<div class="pagination">
+    <ul>
+        <li>@Html.ActionLink("Supervisors", "Index")</li>
+        <li>&raquo; &nbsp;View expenses rejected by accounts</li>
+    </ul>
+    <div class="clear"></div>
+</div>
+
+<hgroup class="title">
+    <h2>Expenses rejected by accounts staff</h2>
+</hgroup>
+
+<table class="padded">
+    <tr>
+        <th>
+            Report Name
+        </th>
+        <th>
+            Total cost
+        </th>
+        <th>
+            Expenses
+        </th>
+    </tr>
+    <!-- cycle through each report  -->
+    @foreach (var report in Model)
+    {
+        <tr >
+            <!-- display the reports name, amount and a link to the report -->
+            <td>
+                @Html.Encode(report.ReportName)
+            </td>
+            <td>
+                @Html.Encode(report.TotalAmount)
+            </td>
+            <td>
+                @Html.ActionLink("View Expenses", "ViewExpenses", new { id = report.ReportId })
+            </td>
+        </tr>
+    }
+</table>
