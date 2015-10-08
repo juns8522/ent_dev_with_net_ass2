@@ -1,0 +1,31 @@
+@{
+    ViewBag.Title = "AddReport";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>AddReport</h2>
+<!-- Page to add areport -->
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+    <fieldset>
+        <legend>Report Form</legend>
+        <p class="error">@ViewBag.ErrorMessage</p>
+        <!--uses a html form which collects the required fieldsfrom the user-->
+        @using (Html.BeginForm("AddReoprt", "ConsultantController"))
+        {
+            <ol>
+                <li>
+                    @Html.TextBox("report name")
+                </li>
+            </ol>
+            <!--submit the values collected-->
+            <input type="submit" name="submit" value="Add Report">
+        }
+    </fieldset>
+}
+<!-- validate the values entered -->
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
