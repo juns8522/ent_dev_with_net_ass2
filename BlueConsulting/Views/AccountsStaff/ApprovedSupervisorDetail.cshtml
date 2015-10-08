@@ -1,0 +1,47 @@
+@using BueConsulting.Models
+@model IEnumerable<BueConsulting.Models.Report>
+@{
+    ViewBag.Title = "ApprovedSupervisorDetail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    //result contains the id of supervisor and his total approved expenses
+    var result = from report in Model
+                 where report.AccountsApproval == "APPROVED" && report.SupervisorApproval == "APPROVED"
+                 group report by report.SupervisorId into model
+                 select new
+                 {
+                     SupervisorId = model.Key,
+                     TotalAmount = model.Sum(x => x.TotalAmount)
+                 };
+}
+
+<h2>Total Expenses approved by Supervisor</h2>
+
+<table>
+    <thead>
+        <tr>
+            <td>Supervisor</td>
+            <td>Department</td>
+            <td>Approved Expenses</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var report in result)
+        {
+            <tr>
+                @{
+                    var context = new BlueConsultingContext();
+                    
+                    //get user using supervisorId
+                    var users = context.UserProfiles.Where(x => x.UserId == report.SupervisorId);
+                    foreach (var user in users)
+                    {
+                        <td>@user.UserName</td>
+                        <td>@user.Department</td>
+                    }
+                }
+                <td align="right">$@report.TotalAmount</td>
+            </tr>
+        }
+    </tbody>
+</table>
