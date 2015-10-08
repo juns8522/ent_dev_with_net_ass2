@@ -1,0 +1,40 @@
+@model IEnumerable<BueConsulting.Models.Report>
+    @{
+    ViewBag.Title = "ViewReports";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!--displays a list of consultant reports-->
+<h2>ViewReports</h2>
+
+    <table>
+
+        <tr>
+
+            <th >
+                Report Name
+            </th>
+            <th >
+                Total Amount
+            </th>
+            <th >
+                Expenses
+            </th>
+
+        </tr>
+        <!--cycle through the reports to display its name, amount, and a link to the expenses -->
+                @foreach (var report in Model)
+        {
+            <tr >
+                <td >
+                    @Html.Encode(report.ReportName)
+                </td>
+                <td>
+                    @Html.Encode(report.TotalAmount)
+                </td>
+                <td >
+                    @Html.ActionLink("View Expenses", "ViewExpenses", new { id = report.ReportId })
+                </td>
+            </tr>
+
+        }
+</table>
