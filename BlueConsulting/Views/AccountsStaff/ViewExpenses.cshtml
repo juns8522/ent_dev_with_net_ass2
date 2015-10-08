@@ -1,0 +1,47 @@
+@using BueConsulting
+@model IEnumerable<BueConsulting.Models.Expense>
+@{
+    ViewBag.Title = "ViewExpenses";
+}
+
+<h2>View Expenses</h2>
+
+<!-- Table for displaying expenses of selected report-->
+<table>
+    <tr>
+        <th>Date</th>
+        <th>Description</th>
+        <th>Location</th>
+        <th>Amount</th>
+        <th>Currency</th>
+        <th>Amount AUD</th>
+        <th>Receipt</th>
+    </tr>
+    <!-- loop through each expense and dis -->
+    @foreach (var expense in Model)
+    {
+        <tr>
+            <td>
+                @Html.Encode(expense.Date)
+            </td>
+            <td>
+                @Html.Encode(expense.Description)
+            </td>
+            <td>
+                @Html.Encode(expense.Location)
+            </td>
+            <td>
+                @Html.Encode(expense.Amount)
+            </td>
+            <td>
+                @Html.Encode(expense.Currency)
+            </td>
+            <td>
+                @Html.Encode(expense.AmountAud)
+            </td>
+            <td>
+                @Html.ActionLink("View Receipt", "ViewReceipt", new { id = expense.ExpenseId })
+            </td>
+        </tr>
+    }
+</table>
