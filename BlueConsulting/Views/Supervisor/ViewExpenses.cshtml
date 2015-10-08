@@ -1,0 +1,72 @@
+@using BueConsulting
+@model IEnumerable<BueConsulting.Models.Expense>
+@{
+    ViewBag.Title = "View Expenses";
+}
+
+<div class="pagination">
+    <ul>
+        <li>@Html.ActionLink("Supervisors", "Index")</li>
+        <li>&raquo; &nbsp;@Html.ActionLink("Reports", "ViewReports")</li>
+        <li>&raquo; &nbsp;Expenses</li>
+    </ul>
+    <div class="clear"></div>
+</div>
+
+<hgroup class="title">
+    <h2>View Expenses</h2>
+</hgroup>
+
+<table class="padded">
+    <tr>
+        <th>
+            Date
+        </th>
+        <th>
+            Description
+        </th>
+        <th>
+            Location
+        </th>
+        <th>
+            Amount
+        </th>
+        <th>
+            Currency
+        </th>
+        <th>
+            Amount AUD
+        </th>
+        <th>
+            Receipt
+        </th>
+    </tr>
+    //cycles thorugh each expense
+    @foreach (var expense in Model)
+    {
+        <tr>
+           <!-- display the date,description, location, amount, currency, amount in AUD and reciept in a table row seperated by columns -->
+            <td>
+                @Html.Encode(expense.Date)
+            </td>
+            <td>
+                @Html.Encode(expense.Description)
+            </td>
+            <td>
+                @Html.Encode(expense.Location)
+            </td>
+            <td>
+                @Html.Encode(expense.Amount)
+            </td>
+            <td>
+                @Html.Encode(expense.Currency)
+            </td>
+            <td>
+                @Html.Encode(expense.AmountAud)
+            </td>
+            <td>
+                @Html.ActionLink("View Receipt", "ViewReceipt", new { id = expense.ExpenseId })
+            </td>
+        </tr>
+    }
+</table>
